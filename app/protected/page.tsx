@@ -7,6 +7,7 @@ import { Medication } from "@/components/medication-schedule";
 import ProfileFullForm from "@/components/profile-full-form";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
+import MultiStepSignupForm from "@/components/multi-step-signup-form";
 
 
 export default function DashboardPage() {
@@ -53,8 +54,10 @@ export default function DashboardPage() {
         </header>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <section className="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
-          {profile && (
+          {profile ? (
             <ProfileFullForm profile={profile} onProfileUpdate={setProfile} />
+          ) : (
+            <MultiStepSignupForm onProfileComplete={setProfile} />
           )}
 
           </section>
