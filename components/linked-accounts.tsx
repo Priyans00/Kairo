@@ -83,6 +83,7 @@ export default function LinkedAccounts({ relatives, onRelativesChange }: { relat
         ))}
         {relatives.length === 0 && <li className="text-gray-400 text-sm">No relatives added.</li>}
       </ul>
+      </div>
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
           <form onSubmit={handleSave} className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 w-full max-w-md flex flex-col gap-4">
