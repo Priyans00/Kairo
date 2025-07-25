@@ -8,6 +8,7 @@ import ProfileFullForm from "@/components/profile-full-form";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import MultiStepSignupForm from "@/components/multi-step-signup-form";
+import BubbleBackground from "@/components/ui/BubbleBackground";
 
 
 export default function DashboardPage() {
@@ -48,12 +49,13 @@ export default function DashboardPage() {
 
   return (
     <main className="flex-1 w-full flex flex-col items-center justify-center p-4">
+      <BubbleBackground />
       <div className="w-full max-w-7xl flex flex-col gap-8">
         <header className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-300">My Dashboard</h1>
         </header>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <section className="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
+          <section className="lg:col-span-1 bg-gray-200 dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
           {profile ? (
             <ProfileFullForm profile={profile} onProfileUpdate={setProfile} />
           ) : (
@@ -61,10 +63,10 @@ export default function DashboardPage() {
           )}
 
           </section>
-          <section className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
+          <section className="lg:col-span-2 bg-gray-200 dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px] overflow-y-auto">
             <MedicationSchedule medications={medications} onMedicationsChange={setMedications} />
           </section>
-          <section className="lg:col-span-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6">
+          <section className="lg:col-span-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 overflow-y-auto">
             <LinkedAccounts relatives={relatives} onRelativesChange={setRelatives} />
           </section>
         </div>

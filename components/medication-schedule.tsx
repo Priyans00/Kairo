@@ -134,7 +134,7 @@ export default function MedicationSchedule({ medications, onMedicationsChange }:
               key={med.id || idx}
               className="card bg-base-100 shadow-lg border border-gray-200 dark:border-gray-700"
             >
-              <div className="card-body p-4">
+              <div className="card-body p-4 bg-white dark:bg-gray-800">
                 <div className="flex justify-between items-start">
                   <h3 className="card-title">{med.name}</h3>
                   <div className="flex gap-2">
