@@ -2,16 +2,24 @@
 
 import MedicationSchedule from "@/components/medication-schedule";
 import LinkedAccounts from "@/components/linked-accounts";
-import { LogoutButton } from "@/components/logout-button";
+import { Relative } from "@/components/linked-accounts";
+import { Medication } from "@/components/medication-schedule";
 import ProfileFullForm from "@/components/profile-full-form";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 
+
 export default function DashboardPage() {
-  const [profile, setProfile] = useState(null);
-  const [medications, setMedications] = useState([]);
-  const [relatives, setRelatives] = useState([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const [relatives, setRelatives] = useState<Relative[]>([]);
   const [loading, setLoading] = useState(true);
+
+  interface Profile {
+    id: string;
+    name: string;
+    disease: string;
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -42,11 +50,13 @@ export default function DashboardPage() {
       <div className="w-full max-w-7xl flex flex-col gap-8">
         <header className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-300">My Dashboard</h1>
-          <LogoutButton />
         </header>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <section className="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
+          {profile && (
             <ProfileFullForm profile={profile} onProfileUpdate={setProfile} />
+          )}
+
           </section>
           <section className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
             <MedicationSchedule medications={medications} onMedicationsChange={setMedications} />

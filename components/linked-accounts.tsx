@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-interface Relative {
+export interface Relative {
   id?: string;
   relative_id: string;
   relationship: string;
@@ -31,7 +31,7 @@ export default function LinkedAccounts({ relatives, onRelativesChange }: { relat
     e.preventDefault();
     if (!form.relative_id.trim() || !form.relationship.trim()) { setError("All fields required"); return; }
     const supabase = createClient();
-    let updatedRels = [...relatives];
+    const updatedRels = [...relatives];
     if (editIdx === null) {
       // Add
       const { data, error: dbError } = await supabase.from("relatives").insert({

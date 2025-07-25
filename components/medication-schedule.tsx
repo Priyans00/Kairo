@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-interface Medication {
+export interface Medication {
   id?: string;
   user_id?: string;
   name: string;
   dosage?: string;
-  schedule?: any;
+  schedule?: string;
   start_date?: string;
   end_date?: string;
   meal: string;

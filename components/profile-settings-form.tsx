@@ -1,13 +1,19 @@
-import { useState } from "react";
+import React,{ useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { Profile } from "@/components/multi-step-signup-form";
 
-export default function ProfileSettingsForm({ profile, onProfileUpdate }) {
+export interface Props {
+  profile: Profile;
+  onProfileUpdate: (updated: Profile) => void;
+}
+
+export default function ProfileSettingsForm({ profile, onProfileUpdate }: Props) {
   const [form, setForm] = useState({ name: profile.name || "", disease: profile.disease || "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleUpdate(e) {
+  async function handleUpdate(e: React.FormEvent) {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
