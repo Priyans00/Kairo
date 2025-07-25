@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { Profile } from "@/components/multi-step-signup-form";
 
-export default function ProfileFullForm({ profile, onProfileUpdate }: { profile: any; onProfileUpdate: (profile: any) => void }) {
+
+interface Props {
+  profile: Profile;
+  onProfileUpdate: (updated: Profile) => void;
+}
+
+export default function ProfileFullForm({ profile, onProfileUpdate }: Props) {
   const [editMode, setEditMode] = useState(!profile?.name || !profile?.disease);
   const [form, setForm] = useState<{ name: string; disease: string }>({
     name: profile?.name || "",

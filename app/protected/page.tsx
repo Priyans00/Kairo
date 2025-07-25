@@ -2,16 +2,24 @@
 
 import MedicationSchedule from "@/components/medication-schedule";
 import LinkedAccounts from "@/components/linked-accounts";
-import { LogoutButton } from "@/components/logout-button";
+import { Relative } from "@/components/linked-accounts";
+import { Medication } from "@/components/medication-schedule";
 import ProfileFullForm from "@/components/profile-full-form";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 
+
 export default function DashboardPage() {
-  const [profile, setProfile] = useState(null);
-  const [medications, setMedications] = useState([]);
-  const [relatives, setRelatives] = useState([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [medications, setMedications] = useState<Medication[]>([]);
+  const [relatives, setRelatives] = useState<Relative[]>([]);
   const [loading, setLoading] = useState(true);
+
+  interface Profile {
+    id: string;
+    name: string;
+    disease: string;
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -38,17 +46,22 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="flex-1 w-full flex flex-col items-center justify-center">
-      <div className="w-full max-w-6xl flex flex-col gap-8 px-4 py-8">
-        <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-300 mb-4">My Dashboard</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6">
+    <main className="flex-1 w-full flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-7xl flex flex-col gap-8">
+        <header className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-300">My Dashboard</h1>
+        </header>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <section className="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
+          {profile && (
             <ProfileFullForm profile={profile} onProfileUpdate={setProfile} />
+          )}
+
           </section>
-          <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6">
+          <section className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
             <MedicationSchedule medications={medications} onMedicationsChange={setMedications} />
           </section>
-          <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 md:col-span-2">
+          <section className="lg:col-span-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6">
             <LinkedAccounts relatives={relatives} onRelativesChange={setRelatives} />
           </section>
         </div>

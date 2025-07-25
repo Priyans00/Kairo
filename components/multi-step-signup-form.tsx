@@ -3,7 +3,17 @@ import { createClient } from "@/lib/supabase/client";
 
 const steps = ["Personal Info", "Disease Info"];
 
-export default function MultiStepSignupForm({ onProfileComplete }) {
+export interface Profile {
+  id: string;
+  name: string;
+  disease: string;
+}
+
+interface Props {
+  onProfileComplete: (profile: Profile) => void;
+}
+
+export default function MultiStepSignupForm({ onProfileComplete } : Props) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     name: "",
