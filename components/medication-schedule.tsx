@@ -131,11 +131,9 @@ export default function MedicationSchedule({ medications, onMedicationsChange })
               <p>Meal: {med.meal === 'before' ? 'Before meal' : 'After meal'}</p>
               {med.notes && <p>Notes: {med.notes}</p>}
             </div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="alert alert-info">
+        ))
+      ) : (
+        <div className="alert alert-info">
         <span>No medications added yet</span>
       </div>
     )}
