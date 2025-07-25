@@ -44,14 +44,37 @@ export default function MedicationSchedule({ medications, onMedicationsChange })
       user_id: user.id,
       name: form.name,
       dosage: form.dosage,
-      times: `{${form.times.map(t => `"${t}"`).join(",")}}`,
+      times: form.times,
       meal: form.meal,
       notes: form.notes,
       start_date: form.start_date || null,
-      end_date: form.end_date || null
+      end_date: form.end_date || null,
     };
 
-    // Rest of the save logic
+    let result;
+    if (editIdx !== null) {
+      // Update existing medication
+      const medId = medications[editIdx].id;
+      result = await supabase.from("medications").update(medicationData).eq("id", medId).select();
+    } else {
+      // Add new medication
+      result = await supabase.from("medications").insert(medicationData).select();
+    }
+
+    const { data, error: dbError } = result;
+
+    if (dbError) {
+      setError(dbError.message);
+    } else if (data) {
+      if (editIdx !== null) {
+        onMedicationsChange(medications.map((med, idx) => (idx === editIdx ? data[0] : med)));
+      } else {
+        onMedicationsChange([...medications, data[0]]);
+      }
+      setShowModal(false);
+      setEditIdx(null);
+      setForm({ name: "", dosage: "", times: [""], meal: "before", notes: "", start_date: "", end_date: "" });
+    }
   }
 
   const handleTimeChange = (idx: number, value: string) => {
@@ -68,18 +91,18 @@ export default function MedicationSchedule({ medications, onMedicationsChange })
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">Medications</h2>
+        <h2 className="text-2xl font-bold">Medications</h2>
         <button onClick={() => setShowModal(true)} className="btn btn-primary">
           Add Medication
         </button>
       </div>
 
-      {medications?.length > 0 ? (
-        <div className="space-y-3">
-          {medications.map((med, idx) => (
-            <div key={med.id || idx} className="card bg-base-100 shadow">
-              <div className="card-body">
-                <div className="flex justify-between">
+      <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+        {medications?.length > 0 ? (
+          medications.map((med, idx) => (
+            <div key={med.id || idx} className="card bg-base-100 shadow-lg border border-gray-200 dark:border-gray-700">
+              <div className="card-body p-4">
+                <div className="flex justify-between items-start">
                   <h3 className="card-title">{med.name}</h3>
                   <div className="flex gap-2">
                     <button 

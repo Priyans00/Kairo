@@ -62,16 +62,17 @@ export default function LinkedAccounts({ relatives, onRelativesChange }: { relat
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-semibold">Linked Relatives</h2>
+        <h2 className="text-2xl font-bold">Linked Relatives</h2>
         <button className="btn btn-primary" onClick={openAdd}>Add Relative</button>
       </div>
-      <ul className="divide-y divide-blue-200 dark:divide-gray-700">
-        {relatives.map((rel, idx) => (
-          <li key={rel.id || idx} className="py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <div>
-              <div className="font-semibold">{rel.relative_id}</div>
+      <div className="flex-1 overflow-y-auto pr-2">
+        <ul className="divide-y divide-blue-200 dark:divide-gray-700">
+          {relatives.map((rel, idx) => (
+            <li key={rel.id || idx} className="py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+              <div>
+                <div className="font-semibold text-lg">{rel.relative_id}</div>
               <div className="text-xs text-gray-500">{rel.relationship}</div>
             </div>
             <div className="flex gap-2">
