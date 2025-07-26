@@ -19,7 +19,7 @@ app = FastAPI(
 
 
 origins = [
-    "https://kairomed.vercel.app/",      # frontend URL
+    "https://kairomed.vercel.app",      # frontend URL
     "http://localhost:3000"              # Optional: local dev
 ]
 

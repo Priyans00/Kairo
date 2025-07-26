@@ -60,46 +60,64 @@ export default function MedicinePage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center gap-6 p-4 md:p-10">
+    <div className="flex min-h-screen w-full flex-col items-center gap-8 p-6 md:p-12 bg-gradient-to-b from-background to-background/80">
       <BubbleBackground />
-      <div className="w-full max-w-2xl">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Medicine Information</CardTitle>
+      <div className="w-full max-w-3xl space-y-8">
+        <Card className="border-2 shadow-lg transition-all duration-300 hover:shadow-xl">
+          <CardHeader className="space-y-2 text-center">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
+              Medicine Information
+            </CardTitle>
+            <p className="text-muted-foreground">Enter a medicine name to get detailed information</p>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Input
                   type="text"
                   value={medicineName}
                   onChange={(e) => setMedicineName(e.target.value)}
                   placeholder="Enter medicine name"
+                  className="flex-1 text-lg transition-all duration-200 focus:ring-2 focus:ring-primary"
                   required
                 />
+                <Button 
+                  type="submit" 
+                  disabled={loading}
+                  className="w-full sm:w-auto px-8 py-2 text-lg font-medium transition-all duration-200 hover:scale-105"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Searching...
+                    </span>
+                  ) : 'Search'}
+                </Button>
               </div>
-              <Button type="submit" disabled={loading}>
-                {loading ? 'Searching...' : 'Search'}
-              </Button>
             </form>
 
             {error && (
-              <div className="mt-4 text-red-500">{error}</div>
+              <div className="mt-6 p-4 rounded-lg bg-destructive/10 text-destructive animate-fadeIn">
+                <p className="text-center">{error}</p>
+              </div>
             )}
 
             {medicineInfo && (
-              <div className="mt-6 space-y-4">
-                <div className="rounded-lg bg-card p-4 shadow-sm">
-                  <h3 className="mb-2 font-semibold">Use Case</h3>
-                  <p>{medicineInfo.use_case}</p>
+              <div className="mt-8 space-y-6 animate-fadeIn">
+                <div className="rounded-xl bg-primary/5 p-6 transition-all duration-300 hover:bg-primary/10">
+                  <h3 className="text-xl font-semibold mb-3 text-primary">Use Case</h3>
+                  <p className="text-lg leading-relaxed">{medicineInfo.use_case}</p>
                 </div>
-                <div className="rounded-lg bg-card p-4 shadow-sm">
-                  <h3 className="mb-2 font-semibold">Composition</h3>
-                  <p>{medicineInfo.composition}</p>
+                <div className="rounded-xl bg-primary/5 p-6 transition-all duration-300 hover:bg-primary/10">
+                  <h3 className="text-xl font-semibold mb-3 text-primary">Composition</h3>
+                  <p className="text-lg leading-relaxed">{medicineInfo.composition}</p>
                 </div>
-                <div className="rounded-lg bg-card p-4 shadow-sm">
-                  <h3 className="mb-2 font-semibold">Side Effects</h3>
-                  <p>{medicineInfo.side_effects}</p>
+                <div className="rounded-xl bg-primary/5 p-6 transition-all duration-300 hover:bg-primary/10">
+                  <h3 className="text-xl font-semibold mb-3 text-primary">Side Effects</h3>
+                  <p className="text-lg leading-relaxed">{medicineInfo.side_effects}</p>
                 </div>
               </div>
             )}
