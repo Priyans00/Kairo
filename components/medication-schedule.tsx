@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 export interface Medication {
   id?: string;
   user_id?: string;
+  relative_profile_id?: string;  // Add this field
   name: string;
   dosage?: string;
   schedule?: string;
@@ -17,9 +18,10 @@ export interface Medication {
 interface Props {
   medications: Medication[];
   onMedicationsChange: (meds: Medication[]) => void;
+  relative_profile_id?: string;  // Add this prop
 }
 
-export default function MedicationSchedule({ medications, onMedicationsChange }: Props) {
+export default function MedicationSchedule({ medications, onMedicationsChange, relative_profile_id }: Props) {
   const [showModal, setShowModal] = useState(false);
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [form, setForm] = useState<Medication>({
@@ -55,7 +57,8 @@ export default function MedicationSchedule({ medications, onMedicationsChange }:
     }
 
     const medicationData = {
-      user_id: user.id,
+      user_id: relative_profile_id ? null : user.id, // Set user_id to null if it's for a relative
+      relative_profile_id: relative_profile_id, // This should be a UUID from the relative_profiles table
       name: form.name,
       dosage: form.dosage,
       times: form.times,
@@ -67,11 +70,9 @@ export default function MedicationSchedule({ medications, onMedicationsChange }:
 
     let result;
     if (editIdx !== null) {
-      // Update existing medication
       const medId = medications[editIdx].id;
       result = await supabase.from("medications").update(medicationData).eq("id", medId).select();
     } else {
-      // Add new medication
       result = await supabase.from("medications").insert(medicationData).select();
     }
 
