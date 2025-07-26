@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import MultiStepSignupForm from "@/components/multi-step-signup-form";
 import BubbleBackground from "@/components/ui/BubbleBackground";
 
-
 export default function DashboardPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [medications, setMedications] = useState<Medication[]>([]);

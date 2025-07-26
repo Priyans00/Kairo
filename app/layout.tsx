@@ -43,8 +43,11 @@ export default function RootLayout({
                 <Link href="/protected" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Dashboard</Link>
               </div>
               <div className="flex items-center gap-4">
-                <AuthButton />
+                <Link href="/protected/medicine" className="hover:text-foreground/80">
+                  Medicine Info
+                </Link>
                 <ThemeSwitcher />
+                <AuthButton />
               </div>
             </div>
           </nav>
