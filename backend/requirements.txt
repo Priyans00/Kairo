@@ -1,4 +1,5 @@
 fastapi
 uvicorn
+asyncpg
 python-dotenv
 google-generativeai
