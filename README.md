@@ -1,7 +1,5 @@
 # KairoMed
 
-![KairoMed Banner](./assets/banner.png)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
