@@ -30,7 +30,7 @@ export default function BubbleBackground() {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
+    <div className="fixed inset-0 overflow-hidden z-0 pointer-events-none">
       {bubbles.map((bubble) => (
         <motion.div
           key={bubble.id}
