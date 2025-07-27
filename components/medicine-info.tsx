@@ -9,6 +9,13 @@ interface MedicineInfo {
   use_case: string;
   composition: string;
   side_effects: string;
+  image_url?: string;
+  manufacturer?: string;
+  reviews?: {
+    excellent: string | number;
+    average: string | number;
+    poor: string | number;
+  };
 }
 
 export default function MedicineInfo() {
