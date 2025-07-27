@@ -49,8 +49,8 @@ This integrated approach ensures better adherence, reduces human error, and give
 ```
 ┌──────────┐      HTTPS      ┌─────────────┐      SQL/API      ┌──────────────┐
 │  Next.js │ ──────────────▶ │  FastAPI    │ ────────────────▶ │  Supabase    │
-│ Frontend │                │  Backend    │                  │  Postgres    │
-└──────────┘                └─────────────┘                  └──────────────┘
+│ Frontend │                 │  Backend    │                   │  Postgres    │
+└──────────┘                 └─────────────┘                   └──────────────┘
 ```
 
 ---
