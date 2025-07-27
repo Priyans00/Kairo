@@ -46,6 +46,9 @@ export default function RootLayout({
                 <Link href="/protected/medicine" className="hover:text-foreground/80">
                   Medicine Info
                 </Link>
+                <Link href="/protected/alternatives" className="hover:text-foreground/80">
+                  Medicine Alternatives
+                </Link>
                 <ThemeSwitcher />
                 <AuthButton />
               </div>
