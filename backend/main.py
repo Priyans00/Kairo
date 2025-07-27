@@ -64,6 +64,7 @@ def clean_name(name: str) -> str:
     return re.sub(r"\s+", " ", n).strip()
 
 # Fallback to Gemini AI
+# Fallback to Gemini AI
 async def query_gemini(medicine_name: str) -> MedicineResponse:
     if not GEMINI_API_KEY:
         raise HTTPException(500, "Gemini API key not set")
@@ -77,16 +78,36 @@ async def query_gemini(medicine_name: str) -> MedicineResponse:
     model = genai.GenerativeModel("gemini-1.5-flash")
     resp = await asyncio.to_thread(model.generate_content, prompt)
     text = resp.text or ""
-    use_case = composition = side_effects = "Not available"
+    
+    # Initialize with empty strings instead of "Not available"
+    use_case = composition = side_effects = ""
+    
+    # More robust line parsing
     for line in text.splitlines():
-        low = line.lower()
-        if low.startswith("use case"):
-            use_case = line.split(":",1)[1].strip()
-        elif low.startswith("composition"):
-            composition = line.split(":",1)[1].strip()
-        elif low.startswith("side effects") or low.startswith("side effect"):
-            side_effects = line.split(":",1)[1].strip()
-    return MedicineResponse(use_case=use_case, composition=composition, side_effects=side_effects)
+        line = line.strip()
+        if not line:
+            continue
+            
+        # Split only on first colon
+        parts = line.split(":", 1)
+        if len(parts) != 2:
+            continue
+            
+        key, value = parts[0].lower().strip(), parts[1].strip()
+        
+        if "use case" in key or "uses" in key:
+            use_case = value
+        elif "composition" in key or "ingredients" in key:
+            composition = value
+        elif "side effect" in key:
+            side_effects = value
+    
+    # Use fallback text only if no value was found
+    return MedicineResponse(
+        use_case=use_case or "Information not found",
+        composition=composition or "Information not found",
+        side_effects=side_effects or "Information not found"
+    )
 
 # Primary info endpoint
 @app.post("/medicine/info", response_model=MedicineResponse)
