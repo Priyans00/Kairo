@@ -7,11 +7,19 @@ import { Input } from "@/components/ui/input";
 import BubbleBackground from "@/components/ui/BubbleBackground";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface MedicineInfo {
   use_case: string;
   composition: string;
   side_effects: string;
+  image_url?: string;
+  manufacturer?: string;
+  reviews?: {
+    excellent: string | number;
+    average: string | number;
+    poor: string | number;
+  };
 }
 
 export default function MedicinePage() {
@@ -62,7 +70,7 @@ export default function MedicinePage() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center gap-8 p-6 md:p-12 bg-gradient-to-b from-background to-background/80">
       <BubbleBackground />
-      <div className="w-full max-w-3xl space-y-8">
+      <div className="w-full max-w-4xl space-y-8">
         <Card className="border-2 shadow-lg transition-all duration-300 hover:shadow-xl">
           <CardHeader className="space-y-2 text-center">
             <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
@@ -107,6 +115,42 @@ export default function MedicinePage() {
 
             {medicineInfo && (
               <div className="mt-8 space-y-6 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {medicineInfo.image_url && (
+                    <div className="relative aspect-square rounded-xl overflow-hidden">
+                      <Image
+                        src={medicineInfo.image_url}
+                        alt={medicineName}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-4">
+                    {medicineInfo.manufacturer && (
+                      <div className="text-sm text-muted-foreground">
+                        Manufactured by: {medicineInfo.manufacturer}
+                      </div>
+                    )}
+                    {medicineInfo.reviews && (
+                      <div className="grid grid-cols-3 gap-4 p-4 bg-primary/5 rounded-lg">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-green-600">{medicineInfo.reviews.excellent}%</div>
+                          <div className="text-sm text-muted-foreground">Excellent</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-yellow-600">{medicineInfo.reviews.average}%</div>
+                          <div className="text-sm text-muted-foreground">Average</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-red-600">{medicineInfo.reviews.poor}%</div>
+                          <div className="text-sm text-muted-foreground">Poor</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <div className="rounded-xl bg-primary/5 p-6 transition-all duration-300 hover:bg-primary/10">
                   <h3 className="text-xl font-semibold mb-3 text-primary">Use Case</h3>
                   <p className="text-lg leading-relaxed">{medicineInfo.use_case}</p>
