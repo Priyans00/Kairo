@@ -21,7 +21,7 @@ export default function ProfileFullForm({ profile, onProfileUpdate }: Props) {
   if (!editMode && profile?.name && profile?.disease) {
     // Show read-only card
     return (
-      <div className="flex flex-col gap-4 bg-blue-50 dark:bg-gray-800 rounded-lg p-6 shadow min-h-[200px]">
+      <div className="flex flex-col gap-4 bg-blue-50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 backdrop-blur-sm rounded-lg p-6 shadow min-h-[200px]">
         <h2 className="text-lg font-bold mb-2">Profile Info</h2>
         <div><span className="font-semibold">Name:</span> {profile.name}</div>
         <div><span className="font-semibold">Disease:</span> {profile.disease}</div>

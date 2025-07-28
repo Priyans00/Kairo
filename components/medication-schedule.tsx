@@ -120,7 +120,7 @@ export default function MedicationSchedule({ medications, onMedicationsChange, r
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-full flex flex-col">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Medications</h2>
         <button onClick={() => setShowModal(true)} className="btn btn-primary">
@@ -129,13 +129,13 @@ export default function MedicationSchedule({ medications, onMedicationsChange, r
       </div>
 
       {medications?.length > 0 ? (
-        <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+        <div className="flex-1 overflow-y-auto scrollbar-hide space-y-3 pr-2 max-h-[500px]">
           {medications.map((med, idx) => (
             <div
               key={med.id || idx}
               className="card bg-base-100 shadow-lg border border-gray-200 dark:border-gray-700"
             >
-              <div className="card-body p-4 bg-white dark:bg-gray-800">
+              <div className="card-body p-4 bg-white dark:bg-black/20 backdrop-blur-sm">
                 <div className="flex justify-between items-start">
                   <h3 className="card-title">{med.name}</h3>
                   <div className="flex gap-2">
@@ -174,7 +174,7 @@ export default function MedicationSchedule({ medications, onMedicationsChange, r
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[80vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[80vh] overflow-y-auto scrollbar-hide">
             <h3 className="text-lg font-bold mb-4">{editIdx !== null ? 'Edit' : 'Add'} Medication</h3>
             {error && <p className="text-red-500 mb-2">{error}</p>}
             <form onSubmit={handleSave} className="space-y-4">
