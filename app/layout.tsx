@@ -5,6 +5,7 @@ import "./globals.css";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { AuthButton } from "@/components/auth-button";
+import { NavLink } from "@/components/nav-links";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -37,12 +38,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <nav className="w-full fixed top-0 left-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-b-foreground/10 h-16 flex items-center justify-center shadow-sm">
-            <div className="w-full max-w-6xl flex justify-between items-center px-6">
+            <div className="w-full flex justify-between items-center px-6">
               <div className="flex items-center gap-6">
                 <Link href="/" className="text-2xl font-bold text-blue-700 dark:text-blue-200 tracking-tight">MediCare</Link>
-                <Link href="/protected" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Dashboard</Link>
-                <Link href="/protected/medicine" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Medicine</Link>
-                <Link href="/protected/alternatives" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Alternatives</Link>
+                <NavLink href="/protected">Dashboard</NavLink>
+                <NavLink href="/protected/medicine">Medicine</NavLink>
+                <NavLink href="/protected/alternatives">Alternatives</NavLink>
               </div>
               <div className="flex items-center gap-4">
                 <ThemeSwitcher />

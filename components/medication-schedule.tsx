@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import CustomScrollbar from '@/components/ui/custom-scrollbar';
 
 export interface Medication {
   id?: string;
@@ -129,42 +130,44 @@ export default function MedicationSchedule({ medications, onMedicationsChange, r
       </div>
 
       {medications?.length > 0 ? (
-        <div className="flex-1 overflow-y-auto scrollbar-hide space-y-3 pr-2 max-h-[500px]">
-          {medications.map((med, idx) => (
-            <div
-              key={med.id || idx}
-              className="card bg-base-100 shadow-lg border border-gray-200 dark:border-gray-700"
-            >
-              <div className="card-body p-4 bg-white dark:bg-black/20 backdrop-blur-sm">
-                <div className="flex justify-between items-start">
-                  <h3 className="card-title">{med.name}</h3>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setForm({ ...med, times: Array.isArray(med.times) ? med.times : [""] });
-                        setEditIdx(idx);
-                        setShowModal(true);
-                      }}
-                      className="btn btn-sm btn-secondary"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(med.id)}
-                      className="btn btn-sm btn-error"
-                    >
-                      Delete
-                    </button>
+        <CustomScrollbar>
+          <div className="space-y-3 max-h-[700px] pr-2">
+            {medications.map((med, idx) => (
+              <div
+                key={med.id || idx}
+                className="card bg-base-100 shadow-lg border border-gray-200 dark:border-gray-700 mb-3"
+              >
+                <div className="card-body p-4 bg-white dark:bg-black/20 backdrop-blur-sm">
+                  <div className="flex justify-between items-start">
+                    <h3 className="card-title">{med.name}</h3>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setForm({ ...med, times: Array.isArray(med.times) ? med.times : [""] });
+                          setEditIdx(idx);
+                          setShowModal(true);
+                        }}
+                        className="btn btn-sm btn-secondary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(med.id)}
+                        className="btn btn-sm btn-error"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
+                  <p>Dosage: {med.dosage || 'Not specified'}</p>
+                  <p>Times: {Array.isArray(med.times) ? med.times.join(", ") : 'Not specified'}</p>
+                  <p>Meal: {med.meal === 'before' ? 'Before meal' : 'After meal'}</p>
+                  {med.notes && <p>Notes: {med.notes}</p>}
                 </div>
-                <p>Dosage: {med.dosage || 'Not specified'}</p>
-                <p>Times: {Array.isArray(med.times) ? med.times.join(", ") : 'Not specified'}</p>
-                <p>Meal: {med.meal === 'before' ? 'Before meal' : 'After meal'}</p>
-                {med.notes && <p>Notes: {med.notes}</p>}
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </CustomScrollbar>
       ) : (
         <div className="alert alert-info">
           <span>No medications added yet</span>
