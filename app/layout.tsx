@@ -41,14 +41,10 @@ export default function RootLayout({
               <div className="flex items-center gap-6">
                 <Link href="/" className="text-2xl font-bold text-blue-700 dark:text-blue-200 tracking-tight">MediCare</Link>
                 <Link href="/protected" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Dashboard</Link>
+                <Link href="/protected/medicine" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Medicine</Link>
+                <Link href="/protected/alternatives" className="text-base font-medium text-blue-700 dark:text-blue-200 hover:underline">Alternatives</Link>
               </div>
               <div className="flex items-center gap-4">
-                <Link href="/protected/medicine" className="hover:text-foreground/80">
-                  Medicine Info
-                </Link>
-                <Link href="/protected/alternatives" className="hover:text-foreground/80">
-                  Medicine Alternatives
-                </Link>
                 <ThemeSwitcher />
                 <AuthButton />
               </div>

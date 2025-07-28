@@ -47,25 +47,24 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="flex-1 w-full flex flex-col items-center justify-center p-4">
+    <main className="flex-1 w-full flex flex-col p-0 relative">
       <BubbleBackground />
-      <div className="w-full max-w-7xl flex flex-col gap-8">
-        <header className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-blue-700 dark:text-blue-300">My Dashboard</h1>
+      <div className="w-full flex flex-col gap-8 z-10 relative">
+        <header className="flex justify-between items-center p-4 md:p-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-blue-700 dark:text-blue-300">My Dashboard</h1>
         </header>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <section className="lg:col-span-1 bg-gray-200 dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 p-4 md:p-8">
+          <section className="lg:col-span-1 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 flex flex-col gap-6 border border-white/20 dark:border-gray-700/50">
           {profile ? (
             <ProfileFullForm profile={profile} onProfileUpdate={setProfile} />
           ) : (
             <MultiStepSignupForm onProfileComplete={setProfile} />
           )}
-
           </section>
-          <section className="lg:col-span-2 bg-gray-200 dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 h-[600px] overflow-y-auto">
+          <section className="lg:col-span-2 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 flex flex-col gap-6 border border-white/20 dark:border-gray-700/50">
             <MedicationSchedule medications={medications} onMedicationsChange={setMedications} />
           </section>
-          <section className="lg:col-span-3 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 flex flex-col gap-6 overflow-y-auto">
+          <section className="lg:col-span-3 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 flex flex-col gap-6 border border-white/20 dark:border-gray-700/50">
             <LinkedAccounts relatives={relatives} onRelativesChange={setRelatives} />
           </section>
         </div>
