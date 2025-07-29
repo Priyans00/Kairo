@@ -96,13 +96,13 @@ export default function MedicationCalendar({ medications }: MedicationCalendarPr
         Medication Calendar
       </h3>
       
-      <div className="calendar-container overflow-hidden rounded-lg">
+      <div className="calendar-container overflow-hidden rounded-lg flex justify-center ">
         <Calendar
           onChange={handleDateChange} 
           value={activeDate}
           tileContent={getTileContent}
           tileClassName={getTileClassName}
-          className="border-0 w-full  bg-black  text-black dark:text-gray-800 shadow-none"
+          className="border-0 text-black dark:text-gray-800 shadow-none"
           prevLabel={<ChevronLeft />}
           nextLabel={<ChevronRight />}
           prev2Label={null}
