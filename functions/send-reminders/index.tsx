@@ -1,6 +1,4 @@
 import * as React from 'react';
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.local' });
 import { render } from '@react-email/render';
 import { ReminderEmail } from './template';
 import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend';
