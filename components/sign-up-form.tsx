@@ -47,7 +47,10 @@ export function SignUpForm({
           emailRedirectTo: `${window.location.origin}/protected`,
         },
       });
+      
       if (error) throw error;
+      
+      // Success - user created but profile will be created after they complete the multi-step form
       router.push("/auth/sign-up-success");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");

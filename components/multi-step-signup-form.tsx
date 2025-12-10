@@ -28,23 +28,82 @@ export default function MultiStepSignupForm({ onProfileComplete } : Props) {
     setIsSubmitting(true);
     setError(null);
     const supabase = createClient();
+    
+    // Get the authenticated user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
       setError("User not found. Please log in again.");
       setIsSubmitting(false);
       return;
     }
-    // Insert into profiles table
-    const { error: profileError } = await supabase.from("profiles").upsert({
+    
+    // Check if profile already exists
+    const { data: existingProfile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .single();
+    
+    if (existingProfile) {
+      setError("Profile already exists. Redirecting...");
+      setIsSubmitting(false);
+      // Profile exists, just update it
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({
+          name: form.name,
+          disease: form.disease,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+        
+      if (updateError) {
+        setError(updateError.message);
+        setIsSubmitting(false);
+        return;
+      }
+      
+      setSuccess(true);
+      setIsSubmitting(false);
+      if (onProfileComplete) onProfileComplete({ ...form, id: user.id });
+      return;
+    }
+    
+    // Insert NEW profile (only if it doesn't exist)
+    const { error: profileError } = await supabase.from("profiles").insert({
       id: user.id,
       name: form.name,
       disease: form.disease,
+      email: user.email,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     });
+    
     if (profileError) {
-      setError(profileError.message);
-      setIsSubmitting(false);
-      return;
+      // Check if it's a duplicate key error (profile was created by trigger)
+      if (profileError.code === '23505') {
+        // Profile was created by database trigger, just update it
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({
+            name: form.name,
+            disease: form.disease,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", user.id);
+          
+        if (updateError) {
+          setError(updateError.message);
+          setIsSubmitting(false);
+          return;
+        }
+      } else {
+        setError(profileError.message);
+        setIsSubmitting(false);
+        return;
+      }
     }
+    
     setSuccess(true);
     setIsSubmitting(false);
     if (onProfileComplete) onProfileComplete({ ...form, id: user.id });

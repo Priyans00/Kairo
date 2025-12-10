@@ -27,24 +27,49 @@ export default function DashboardPage() {
     async function fetchData() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
         setProfile(null);
         setLoading(false);
         return;
       }
-      const { data: profileData } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-      const { data: medsData } = await supabase.from("medications").select("*").eq("user_id", user.id);
-      const { data: relsData } = await supabase.from("relatives").select("*").eq("user_id", user.id);
+      
+      const { data: profileData } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+      
+      // Only fetch medications and relatives if profile exists
+      if (profileData) {
+        const { data: medsData } = await supabase
+          .from("medications")
+          .select("*")
+          .eq("user_id", user.id);
+        const { data: relsData } = await supabase
+          .from("relatives")
+          .select("*")
+          .eq("user_id", user.id);
+        
+        setMedications(medsData || []);
+        setRelatives(relsData || []);
+      }
+      
       setProfile(profileData || null);
-      setMedications(medsData || []);
-      setRelatives(relsData || []);
       setLoading(false);
     }
     fetchData();
   }, []);
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
+          <p className="text-lg text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -60,14 +85,48 @@ export default function DashboardPage() {
             {profile ? (
               <ProfileFullForm profile={profile} onProfileUpdate={setProfile} />
             ) : (
-              <MultiStepSignupForm onProfileComplete={setProfile} />
+              <div className="space-y-4">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-300 mb-2">
+                    Complete Your Profile
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Welcome! Please complete your profile to get started with KairoMed.
+                  </p>
+                </div>
+                <MultiStepSignupForm onProfileComplete={setProfile} />
+              </div>
             )}
           </section>
           <section className="lg:col-span-2 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 flex flex-col gap-6 border border-white/20 dark:border-gray-700/50">
-            <MedicationSchedule medications={medications} onMedicationsChange={setMedications} />
+            {profile ? (
+              <MedicationSchedule medications={medications} onMedicationsChange={setMedications} />
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="text-6xl mb-4">💊</div>
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Your Medication Schedule
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Complete your profile to start managing your medications
+                </p>
+              </div>
+            )}
           </section>
           <section className="lg:col-span-3 bg-white/10 dark:bg-black/20 backdrop-blur-md rounded-xl shadow-lg p-6 md:p-8 flex flex-col gap-6 border border-white/20 dark:border-gray-700/50">
-            <LinkedAccounts relatives={relatives} onRelativesChange={setRelatives} />
+            {profile ? (
+              <LinkedAccounts relatives={relatives} onRelativesChange={setRelatives} />
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="text-6xl mb-4">👨‍👩‍👧‍👦</div>
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  Family & Linked Accounts
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Complete your profile to manage family member accounts
+                </p>
+              </div>
+            )}
           </section>
         </div>
       </div>
